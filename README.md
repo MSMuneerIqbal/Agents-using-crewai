@@ -49,39 +49,221 @@ CrewAI has been applied in various projects, including:
 - **Terraform Code Analysis**: A workflow involving a Code Reader, Code Reviewer, and Code Documentation Writer to automate code review and documentation generation.
 - **CV Data Transformation**: A project that converts unstructured CV text into structured data for databases, utilizing agents specialized in reading CVs and executing queries.
 
-### **Example Code Implementation**
-Here’s a simple example of how to set up a CrewAI project with agents and tasks:
+# UV , litellm and CrewAi Setup
+Welcome to the repository for GloProg (GloVersity) Class 08, held on -- / -- / ----. ion.  
+
+## 📌 Table of Contents
+1. [PowerShell Setup](#powershell-setup)  
+2. [UV Basics](#uv-basics)  
+3. [Creating and Managing Projects](#creating-and-managing-projects)  
+4. [Adding Dependencies](#adding-dependencies)  
+5. [Working with LiteLLM](#working-with-litellm)  
+6. [Understanding Python Decorators](#understanding-python-decorators)  
+7. [CrewAI Installation & Setup](#crewai-installation--setup)  
+8. [Running CrewAI Workflow](#running-crewai-workflow)  
+
+---
+
+## ⚡ PowerShell Setup  
+To begin, run the following command to install UV:  
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+Check if UV is installed correctly:  
+```sh
+uv version
+uv help
+```
+
+---
+
+## 🎯 UV Basics
+Initialize a new project:  
+```sh
+uv init my-project
+code .
+```
+Open the terminal and navigate into the project folder:  
+```sh
+cd .\my-project\
+uv run hello.py
+```
+Modify `hello.py`, rerun the script, and observe changes:  
+```sh
+uv run hello.py
+```
+
+---
+
+## 📦 Adding Dependencies  
+Install additional packages:  
+```sh
+uv add numpy pandas
+```
+Verify the dependencies in the `pyproject.toml` file.  
+
+---
+
+## 🚀 Creating and Managing Projects  
+Create another project:  
+```sh
+uv init --package another-project
+```
+Return to VS Code and check the `pyproject.toml` file.  
+Navigate to `src/` and create `hello.py`:
+```python
+def my_function():
+    print("Hello from my_function()")
+```
+Now, add a new command in `pyproject.toml`:  
+```toml
+gloprog = "another_project.hello:my_function"
+```
+Run the command from the terminal:  
+```sh
+uv run gloprog
+```
+Install the package in editable mode:  
+```sh
+pip install -e .
+```
+
+---
+
+## 🔥 Working with LiteLLM  
+Initialize a new project:  
+```sh
+uv init --package litellm-project
+cd litellm-project
+```
+Add the LiteLLM dependency:  
+```sh
+uv add litellm
+uv venv
+```
+Activate the virtual environment:  
+```sh
+.venv\Scripts\activate   # Windows
+source .venv/bin/activate   # macOS/Linux
+```
+Now make hello.py in SRC folder. 
 
 ```python
+from litellm import completion
 import os
-from getpass import getpass
-from crewai import Agent, Task, Crew, Process
 
-# Set up API keys securely
-SERPER_API_KEY = getpass("Your Serper API key")
-os.environ['SERPER_API_KEY'] = SERPER_API_KEY
-GROQ_API_KEY = getpass("Your Groq API key")
-os.environ['GROQ_API_KEY'] = GROQ_API_KEY
+os.environ["OPENAI_API_KEY"] = "ADD YOUR API KEY"
+os.environ["GEMINI_API_KEY"] = "ADD YOUR API KEY"
 
-# Define agents
-code_reader = Agent(role="Code Reader", goal="Read and analyze code.")
-code_reviewer = Agent(role="Code Reviewer", goal="Review code and suggest improvements.")
-doc_writer = Agent(role="Documentation Writer", goal="Generate documentation from code analysis.")
+def openai():
+    response = completion(
+        model="openai/gpt-4o",
+        messages=[{"content": "Hello, how are you?", "role": "user"}]
+    )
+    print(response)
 
-# Define tasks
-read_task = Task(name="Read Code", agent=code_reader)
-review_task = Task(name="Review Code", agent=code_reviewer)
-write_task = Task(name="Write Documentation", agent=doc_writer)
+def gemini():
+    response = completion(
+        model="gemini/gemini-1.5-flash",
+        messages=[{"content": "Hello, how are you?", "role": "user"}]
+    )
+    print(response)
 
-# Create a Crew
-crew = Crew(
-    agents=[code_reader, code_reviewer, doc_writer],
-    tasks=[read_task, review_task, write_task],
-    process=Process.sequential,
-    max_rpm=3,
-    cache=True
-)
+def gemini2():
+    response = completion(
+        model="gemini/gemini-2.0-flash-exp",
+        messages=[{"content": "Hello, how are you?", "role": "user"}]
+    )
+    print(response)
+```
+Add your API key and run:  
+```sh
+uv run gemini
+```
 
-# Execute the Crew
-result = crew.kickoff(inputs={'code_base': "path/to/code"})
-print(result)
+---
+
+## 🧠 Understanding Python Decorators  
+**Python decorators** are functions that modify the behavior of another function without changing its structure.  
+Example:  
+```python
+def my_decorator(func):
+    def wrapper():
+        print("Before the function is called.")
+        func()
+        print("After the function is called.")
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print("Hello, world!")
+
+say_hello()
+```
+Try running this in **Google Colab** to experiment with decorators.
+
+---
+
+## 🤖 CrewAI Installation & Setup  
+To install CrewAI, follow these steps:
+
+### Step 1: Install Microsoft C++ Build Tools  
+Download from [Visual Studio Official Site](https://visualstudio.microsoft.com/visual-cpp-build-tools/).  
+
+### Step 2: During Installation, Select:  
+✅ MSVC v142 or later  
+✅ Windows 10 SDK  
+✅ C++ CMake tools for Windows  
+
+Restart your system after installation.
+
+### Step 3: Upgrade Pip & Install CrewAI  
+```sh
+pip install --upgrade pip setuptools wheel
+pip install crewai
+```
+If using a virtual environment:  
+```sh
+.venv\Scripts\activate   # Windows
+source .venv/bin/activate   # macOS/Linux
+```
+If installation issues occur:  
+```sh
+pip install hnswlib
+pip install crewai
+```
+Verify installation:  
+```sh
+crewai version
+```
+
+---
+
+## ⚙️ Running CrewAI Workflow  
+Create a new CrewAI workflow:  
+```sh
+crewai create flow crew_flow
+dir
+```
+Open the project in **VS Code** and edit `.env`:  
+```env
+OPENAI_API_KEY= (Replace with GEMINI_API_KEY)
+MODEL=gemini/gemini-1.5-flash
+```
+Run the CrewAI script:  
+```sh
+uv run kickoff
+```
+
+---
+
+## 🎯 Conclusion  
+This revision guide covered:
+- Setting up **UV**, **LiteLLM**, and **CrewAI**  
+- Running Python scripts and managing dependencies  
+- Understanding **Python decorators**  
+- Configuring API keys and virtual environments  
+
+🚀 **Keep practicing, and happy coding!** 🚀
+
+---
