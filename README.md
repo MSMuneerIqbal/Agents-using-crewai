@@ -27,6 +27,18 @@ CrewAI is an innovative open-source Python framework designed to facilitate the 
 
 3. **Crew**: A collection of agents working together to accomplish a set of tasks.
 
+## Main Function Points
+
+- **Multi-Agent System**: The project allows the creation of multiple AI agents, each with specialized roles, to collaboratively tackle tasks.
+- **Task Decomposition**: Complex problems can be broken down into manageable tasks, which are then assigned to different agents.
+- **Manager Agent**: A central agent that oversees the workflow, monitors progress, and coordinates the interactions between agents.
+- **Real-Time Adaptation**: Agents can dynamically adjust their strategies based on feedback and changing conditions.
+
+## Technology Stack
+
+- **Python**
+- **CrewAI framework**
+
 ### **How CrewAI Works**
 - Agents communicate with each other to share insights and data.
 - The Manager Agent coordinates these efforts, ensuring that each agent’s output feeds correctly into the next agent’s input.
